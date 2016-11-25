@@ -729,7 +729,7 @@ int main(void)
     bool erase_bonds;
 	  display_status state;
 		
-		uint8_t fb[1152];
+		uint8_t fb[6144];
 	
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
@@ -761,11 +761,21 @@ int main(void)
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
 		
+		
+		memset(fb,0x00,LS013_BYTES_LINE*LS013_YRES);
 		//rgb
 		ls013_init();
 		ls013_clearframe();
 		
-		printImage(fb,0,0,(uint8_t *) superman_h,sizeof(superman_h));	
+		//printImage(fb,0,0,(uint8_t *) superman_h,sizeof(superman_h));	
+		
+		for(int i=0;i<100;i++){
+				for(int a=0;a<100;a++){
+						ls013_drawPixel(fb, a, i, 0x02);
+				}
+		}
+		printText(fb,0,0,"HALLO WELT",10,0x01);	
+
 		ls013_showframe(fb);
 		
 		APP_ERROR_CHECK(err_code);
