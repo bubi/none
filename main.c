@@ -760,7 +760,8 @@ int main(void)
     NRF_LOG_INFO("Bluetooth Dev Studio Start Advertising \r\n");
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
-	
+		
+		//rgb
 		ls013_init();
 		ls013_clearframe();
 		
