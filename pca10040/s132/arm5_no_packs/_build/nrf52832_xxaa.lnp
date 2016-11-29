@@ -48,6 +48,8 @@
 ".\_build\segger_rtt_printf.o"
 ".\_build\softdevice_handler.o"
 ".\_build\ls013b7dh06.o"
+".\_build\gfx_mk.o"
+".\_build\gdisp_lld_framebuffer.o"
 ".\_build\arm_startup_nrf52.o"
 ".\_build\system_nrf52.o"
 --library_type=microlib --strict --scatter ".\_build\nrf52832_xxaa.sct"

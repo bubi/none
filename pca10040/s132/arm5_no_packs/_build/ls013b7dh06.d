@@ -33,4 +33,3 @@
 .\_build\ls013b7dh06.o: ..\..\..\..\..\..\components\libraries\timer\app_timer.h
 .\_build\ls013b7dh06.o: ..\..\..\..\..\..\components\libraries\util\app_util.h
 .\_build\ls013b7dh06.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\_build\ls013b7dh06.o: ..\..\..\..\none\font.h

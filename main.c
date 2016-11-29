@@ -26,6 +26,8 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
+
 #include "nordic_common.h"
 #include "nrf.h"
 #include "app_error.h"
@@ -54,10 +56,13 @@
 #include "LS013B7DH06.h"
 #include "nrf_drv_spi.h"
 
-#include "image.h"
-#include "superman.h"
+#include "gfx.h"
+
+
+
 
 uint8_t toggle =0;
+font_t font;
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1                                          /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
@@ -99,13 +104,127 @@ uint8_t toggle =0;
 static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID;   /**< Handle of the current connection. */
 static nrf_ble_qwr_t                     m_qwr;                                     /**< Queued Writes structure.*/
 
+APP_TIMER_DEF(m_ui_update_id);
 
 ble_bas_battery_level_t m_batt;
  
+uint32_t tmp=0;
+
+
+static GHandle ghLabelBPM;
+static GHandle ghImageBPM;
+static GHandle ghLabelSPEED;
+static GHandle ghImageSPEED;
+static GHandle ghImageDISTANCE;
+static GHandle ghLabelDISTANCE;
+static GHandle ghLabelNOTIFICATION;
+
+
+uint32_t m_msTick;
+
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
 static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
 
+
+
+
+
+
+void createWidgets(void){
+	GWidgetInit		wi;
+ 
+	// Apply some default values for GWIN
+	wi.customDraw = 0;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	wi.g.show = TRUE;
+ 
+
+	wi.g.y = 10;
+	wi.g.x = 5;
+	wi.g.width = 25;
+	wi.g.height = 25;
+
+	ghImageBPM = gwinImageCreate(NULL, &wi.g);
+	gwinImageOpenFile(ghImageBPM, "HEART.bmp");
+	
+	wi.g.y = 10;
+	wi.g.x = 35;
+	wi.g.width = 90;
+	wi.g.height = 25;
+	wi.text = "---";
+	ghLabelBPM = gwinLabelCreate(NULL, &wi);
+	
+	wi.g.y = 40;
+	wi.g.x = 5;
+	wi.g.width = 25;
+	wi.g.height = 25;
+	
+	ghImageSPEED = gwinImageCreate(NULL, &wi.g);
+	gwinImageOpenFile(ghImageSPEED, "SPEED.bmp");
+	
+	wi.g.y = 40;
+	wi.g.x = 35;
+	wi.g.width = 90;
+	wi.g.height = 25;
+	wi.text = "--.--";
+	ghLabelSPEED = gwinLabelCreate(NULL, &wi);
+	
+	
+	wi.g.y = 70;
+	wi.g.x = 5;
+	wi.g.width = 25;
+	wi.g.height = 25;
+	
+	ghImageDISTANCE = gwinImageCreate(NULL, &wi.g);
+	gwinImageOpenFile(ghImageDISTANCE, "BIKE.bmp");
+	
+	wi.g.y = 70;
+	wi.g.x = 35;
+	wi.g.width = 90;
+	wi.g.height = 25;
+	wi.text = "--.--";
+	ghLabelDISTANCE = gwinLabelCreate(NULL, &wi);
+	
+	wi.g.y = 100;
+	wi.g.x = 5;
+	wi.g.width = 120;
+	wi.g.height = 25;
+	wi.text = "05:31";
+	ghLabelNOTIFICATION = gwinLabelCreate(NULL, &wi);;
+	
+}
+
+
+
+void SysTick_Handler(void){
+		m_msTick++;
+}
+
+systemticks_t gfxSystemTicks(void)
+{
+	return m_msTick;
+}
+
+systemticks_t gfxMillisecondsToTicks(delaytime_t ms)
+{
+	return m_msTick;
+}
+
+
+void ui_handler(void * p_context)
+{			
+			
+			uint8_t chars[6];
+			tmp++;
+			sprintf(chars,"%d",tmp);
+			gwinSetText(ghLabelBPM, chars, TRUE);
+			sprintf(chars,"%d",m_msTick);
+			gwinSetText(ghLabelSPEED, chars, TRUE);
+			sprintf(chars,"%d",m_msTick-39);
+			gwinSetText(ghLabelDISTANCE, chars, TRUE);
+}
 
 /**@brief Callback function for asserts in the SoftDevice.
  *
@@ -157,6 +276,7 @@ static void timers_init(void)
     uint32_t err_code;
     err_code = app_timer_create(&m_app_timer_id, APP_TIMER_MODE_REPEATED, timer_timeout_handler);
     APP_ERROR_CHECK(err_code); */
+		app_timer_create(&m_ui_update_id, APP_TIMER_MODE_REPEATED, ui_handler);
 }
 
 
@@ -277,6 +397,7 @@ static void application_timers_start(void)
     uint32_t err_code;
     err_code = app_timer_start(m_app_timer_id, TIMER_INTERVAL, NULL);
     APP_ERROR_CHECK(err_code); */
+		app_timer_start(m_ui_update_id, APP_TIMER_TICKS(500,0), NULL);
 }
 
 
@@ -721,15 +842,18 @@ static void power_manage(void)
 }
 
 
+
+
 /**@brief Function for application main entry.
  */
 int main(void)
 {
     uint32_t err_code;
     bool erase_bonds;
-	  display_status state;
+	
+
 		
-		uint8_t fb[6144];
+		SysTick_Config(SystemCoreClock/1000); // once every 1ms
 	
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
@@ -762,30 +886,28 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 		
 		
-		memset(fb,0x00,LS013_BYTES_LINE*LS013_YRES);
-		//rgb
-		ls013_init();
-		ls013_clearframe();
+		gfxInit();
+		gwinSetDefaultFont(gdispOpenFont("Audiowide_Regular10"));
+		gwinSetDefaultStyle(&BlackWidgetStyle, FALSE);
+		gdispGClear(GDISP,0x00); 
 		
-		//printImage(fb,0,0,(uint8_t *) superman_h,sizeof(superman_h));	
-		
-		for(int i=0;i<100;i++){
-				for(int a=0;a<100;a++){
-						ls013_drawPixel(fb, a, i, 0x02);
-				}
-		}
-		printText(fb,0,0,"HALLO WELT",10,0x01);	
+		createWidgets();
 
-		ls013_showframe(fb);
+	//	gdispGDrawBox(GDISP,1,1,50,50,0x07);
+//		gdispGDrawBox(GDISP,10,10,100,100,0x07);
+	//	gdispGDrawBox(GDISP,20,20,80,80,0x07);
+	//	gdispGFillArea(GDISP,00,00,100,50,0x00);
 		
-		APP_ERROR_CHECK(err_code);
+	/*	font = gdispOpenFont("Audiowide_Regular30");
+		
+		gdispGDrawString	(GDISP,1,10,"bpm",font,0x7); 
+		gdispGDrawString	(GDISP,1,40,"123",font,0x07); 
+		gdispGDrawString	(GDISP,1,70,"05:35",font,0x07); */
+		
     // Enter main loop.
     for (;;)
     {		
-        if (NRF_LOG_PROCESS() == false)
-        {
-            power_manage();
-        }
+
     }
 }
 

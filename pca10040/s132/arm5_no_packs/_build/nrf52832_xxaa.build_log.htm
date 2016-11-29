@@ -22,19 +22,93 @@ Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
 C:\Users\Michael\Documents\none\nRF5_SDK_12.1.0_0d23e2a\examples\ble_peripheral\none\pca10040\s132\arm5_no_packs\none.uvprojx
-Project File Date:  11/24/2016
+Project File Date:  11/28/2016
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'nrf52832_xxaa'
-compiling main.c...
-..\..\..\main.c(730): warning:  #177-D: variable "state" was declared but never referenced
-  	  display_status state;
-..\..\..\main.c: 1 warning, 0 errors
+compiling gfx_mk.c...
+..\..\..\..\..\..\external\ugfx\src\gfx.c(86): warning:  #68-D: integer conversion resulted in a change of sign
+  	gfxInitDone = 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gos/gos_raw32.c(29): warning:  #1215-D: #warning directive: "GOS: Raw32 - Make sure you initialize your hardware and the C runtime before calling gfxInit() in your application!"
+  		#warning "GOS: Raw32 - Make sure you initialize your hardware and the C runtime before calling gfxInit() in your application!"
+..\..\..\..\..\..\external\ugfx\src\gos/gos_x_threads.c(90): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gos/gos_x_threads.c(97): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gos/gos_x_threads.c(125): warning:  #111-D: statement is unreachable
+  		return;
+..\..\..\..\..\..\external\ugfx\src\gos/gos_x_threads.c(147): warning:  #111-D: statement is unreachable
+  		return;
+..\..\..\..\..\..\external\ugfx\src\gos/gos_x_threads.c(637): warning:  #68-D: integer conversion resulted in a change of sign
+  	
+gfxStartThread(me, t);
+..\..\..\..\..\..\external\ugfx\src\gqueue/gqueue.c(150): warning:  #68-D: integer conversion resulted in a change of sign
+  				return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gdisp/gdisp_image_bmp.c(565): warning:  #68-D: integer conversion resulted in a change of sign
+  						return 
+DISP_IMAGE_ERR_BADDATA;
+..\..\..\..\..\..\external\ugfx\src\gevent/gevent.c(93): warning:  #68-D: integer conversion resulted in a change of sign
+  			return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gtimer/gtimer.c(112): warning:  #111-D: statement is unreachable
+  	
+HREAD_RETURN(0);
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_widget.c(102): warning:  #177-D: variable "h" was declared but never referenced
+  	GHandle				h;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_widget.c(103): warning:  #177-D: variable "gh" was declared but never referenced
+  	GHandle				gh;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_widget.c(580): warning:  #68-D: integer conversion resulted in a change of sign
+  		return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_wm.c(388): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_wm.c(424): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_wm.c(740): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_wm.c(880): warning:  #68-D: integer conversion resulted in a change of sign
+  			gwinSetVisible(gh, 
+RUE);
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_wm.c(961): warning:  #68-D: integer conversion resulted in a change of sign
+  		gwinSetVisible(gh, 
+RUE);
+..\..\..\..\..\..\external\ugfx\src\gwin/gwin_image.c(151): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(147): warning:  #68-D: integer conversion resulted in a change of sign
+  			return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(167): warning:  #68-D: integer conversion resulted in a change of sign
+  			return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(223): warning:  #68-D: integer conversion resulted in a change of sign
+  			return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(243): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(321): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile.c(334): warning:  #68-D: integer conversion resulted in a change of sign
+  		return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfile/gfile_fs_rom.c(101): warning:  #68-D: integer conversion resulted in a change of sign
+  	return 
+RUE;
+..\..\..\..\..\..\external\ugfx\src\gfx_mk.c: 27 warnings, 0 errors
 linking...
-Program Size: Code=44572 RO-data=3652 RW-data=1360 ZI-data=23008  
+Program Size: Code=60864 RO-data=12444 RW-data=544 ZI-data=19832  
 FromELF: creating hex file...
-".\_build\nrf52832_xxaa.axf" - 0 Error(s), 1 Warning(s).
+".\_build\nrf52832_xxaa.axf" - 0 Error(s), 27 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -60,10 +134,10 @@ Package Vendor: NordicSemiconductor
    * Component: ARM::CMSIS:CORE:4.3.0
 
    * Component: NordicSemiconductor::Device:Startup:8.9.0
-      Source file:   Device\Source\arm\arm_startup_nrf52.s
       Source file:   Device\Source\system_nrf52.c
+      Source file:   Device\Source\arm\arm_startup_nrf52.s
       Include file:  Device\Include\system_nrf52.h
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
